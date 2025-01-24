@@ -1,27 +1,63 @@
-# AngularDemo17
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.11.
+## Tasks
 
-## Development server
+### 1. Get Users data from API
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Contains call to API to get info about users:
 
-## Code scaffolding
+File: `users.component.ts`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Requirements:
+- transform data using RxJS after request to get strong typed `User[]` after request
+- get only first 5 records
+- reset loading state on completion and errors
+- dispay error on any errors
+- avoid memory leaks on using RxJS
+- display company name as uppercase (in HTML, not in model)
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 2. Implement `AuthService`
 
-## Running unit tests
+It's a global service and should keep Auth state for current user in app.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+File: `auth.service.ts`
 
-## Running end-to-end tests
+You need to implement the following methods and properties:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+`login(email, password)` - no checks, we assume it's valid user. Just store user info and mark that user is authenticated.
 
-## Further help
+`logout()` - remove user info and change mark that user is not authenticated.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+`isAuthenticated` - to check the current state of auth
+
+`currentUser` - should return email of authenticated user or null
+
+### 3. Login Component
+
+Use Reactive Forms to create Login Form functionality.
+
+File: `login.component.ts`
+
+Requirements:
+- email input - add validations: required and email
+- password input - add validations: required and min 4 symbols
+- display errors
+- disable Login button if form not valid
+- inject and call `AuthService login` if form is valid
+
+### 4. Header component (optional)
+
+File: `header.component.ts`
+
+- inject `AuthService`
+- hide Login button and display user email if user is authenticated
+
+### 5. Protect users route (optional)
+
+File: `app-routing.module.ts`
+
+Allow access to 
+`{ path: 'users', component: UsersComponent },`
+only if use is authenticted
+
+
